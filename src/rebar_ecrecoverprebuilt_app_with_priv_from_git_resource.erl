@@ -49,9 +49,11 @@ needs_update(AppInfo, ResourceState) ->
     rebar_git_resource:needs_update(normalize_appinfo(AppInfo), ResourceState).
 
 make_vsn(Dir) ->
+    erlang:display("make_vsn"),
     rebar_git_resource:make_vsn(priv_src_dir(Dir)).
 
 make_vsn(Dir, _ResourceState) ->
+    erlang:display("make_vsn/2"),
     make_vsn(Dir).
 
 %%% Internal functions
