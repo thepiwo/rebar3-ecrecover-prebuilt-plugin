@@ -19,9 +19,9 @@
 ">>).
 
 init(Type, _RebarState) ->
-    erlang:display("Foo"),
     CustomState = #{},
     Resource = rebar_resource_v2:new(Type, ?MODULE, CustomState),
+    erlang:display("Foo"),
     {ok, Resource}.
 
 lock(AppInfo, ResourceState) ->
