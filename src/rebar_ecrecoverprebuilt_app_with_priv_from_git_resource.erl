@@ -21,14 +21,12 @@
 init(Type, _RebarState) ->
     CustomState = #{},
     Resource = rebar_resource_v2:new(Type, ?MODULE, CustomState),
-    erlang:display("Foo"),
     {ok, Resource}.
 
 lock(AppInfo, ResourceState) ->
     {?RESOURCE_TYPE, rebar_git_resource:lock(normalize_appinfo(AppInfo), ResourceState)}.
 
 download(Dir, AppInfo, ResourceState, RebarState) ->
-    erlang:display("Foo"),
     {?RESOURCE_TYPE, Source} = rebar_app_info:source(AppInfo),
     {git, _, {ref, GitRef}} = Source,
     AppVsn = GitRef,
@@ -44,6 +42,7 @@ download(Dir, AppInfo, ResourceState, RebarState) ->
     end.
 
 needs_update(AppInfo, ResourceState) ->
+    erlang:display("Foo"),
     rebar_git_resource:needs_update(normalize_appinfo(AppInfo), ResourceState).
 
 make_vsn(Dir) ->
