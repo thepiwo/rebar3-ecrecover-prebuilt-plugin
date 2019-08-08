@@ -45,7 +45,7 @@ download(Dir, AppInfo, ResourceState, RebarState) ->
     end.
 
 needs_update(AppInfo, ResourceState) ->
-    erlang:display("needs_update
+    erlang:display("needs_update"),
     rebar_git_resource:needs_update(normalize_appinfo(AppInfo), ResourceState).
 
 make_vsn(Dir) ->
