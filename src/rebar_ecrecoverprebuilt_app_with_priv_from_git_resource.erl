@@ -9,7 +9,7 @@
         , make_vsn/2 ]).
 
 -define(RESOURCE_TYPE, ecrecoverprebuilt_app_with_priv_from_git).
--define(APP_NAME, <<"libecrecover">>).
+-define(APP_NAME, <<"ecrecover">>).
 
 -define(APP_DESC, "").
 
