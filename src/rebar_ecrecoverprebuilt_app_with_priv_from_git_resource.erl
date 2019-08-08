@@ -27,6 +27,7 @@ lock(AppInfo, ResourceState) ->
     {?RESOURCE_TYPE, rebar_git_resource:lock(normalize_appinfo(AppInfo), ResourceState)}.
 
 download(Dir, AppInfo, ResourceState, RebarState) ->
+    erlang:display("Foo"),
     {?RESOURCE_TYPE, Source} = rebar_app_info:source(AppInfo),
     {git, _, {ref, GitRef}} = Source,
     AppVsn = GitRef,
