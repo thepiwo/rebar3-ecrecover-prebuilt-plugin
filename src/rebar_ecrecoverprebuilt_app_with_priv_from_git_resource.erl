@@ -80,7 +80,7 @@ OS_RELDIR = $(OS_FAMILY)/$(OS_NAME)
 .PHONY: forced-priv
 forced-priv: rm-priv
 	if [ -e priv_src/$(OS_RELDIR) ]; then cp -pR priv_src/$(OS_RELDIR) priv; fi
-        if [ -e priv_src/$(OS_RELDIR) ]; then cp -pR priv_src/$(OS_RELDIR) ../ecrecover/priv; fi
+	if [ -e priv_src/$(OS_RELDIR) ]; then cp -pR priv_src/$(OS_RELDIR) ../ecrecover/priv; fi
 
 .PHONY: rm-priv
 rm-priv:
