@@ -30,7 +30,17 @@ download(Dir, AppInfo, ResourceState, RebarState) ->
     {?RESOURCE_TYPE, Source} = rebar_app_info:source(AppInfo),
     {git, _, {ref, GitRef}} = Source,
     AppVsn = GitRef,
-    Fs = [{filename:join(Dir, "Makefile"), makefile(os:type())},
+    ArchStr = erlang:system_info(system_architecture),
+    OsArch = case string:find(ArchStr, "aarch64", leading) of
+                 nomatch -> "x86_64";
+                 _ -> "arm64"
+             end,
+    {_, Osname} = os:type(),
+    LinuxOsArchPath = case Osname of
+                          linux -> "/" ++ OsArch;
+                          _ -> ""
+                      end,
+    Fs = [{filename:join(Dir, "Makefile"), makefile(os:type(), LinuxOsArchPath)},
           {filename:join(Dir, "rebar.config"), ?REBAR_CONFIG},
           {app_src_file(Dir, ?APP_NAME), minimal_app_src(?APP_NAME, ?APP_DESC, AppVsn)}
          ],
@@ -71,11 +81,12 @@ force_write_file(Filename, Bytes) ->
     ok = filelib:ensure_dir(Filename),
     file:write_file(Filename, Bytes).
 
-makefile({Osfamily, Osname}) ->
+makefile({Osfamily, Osname}, OsarchPath) ->
     Template = <<
 "OS_FAMILY = {{osfamily}}
 OS_NAME = {{osname}}
-OS_RELDIR = $(OS_FAMILY)/$(OS_NAME)
+OS_ARCH_PATH = {{osarchpath}}
+OS_RELDIR = $(OS_FAMILY)/$(OS_NAME)$(OS_ARCH_PATH)
 
 .PHONY: forced-priv
 forced-priv: rm-priv
@@ -88,7 +99,7 @@ rm-priv:
 .PHONY: clean
 clean: rm-priv ;
 ">>,
-    Context = [{osfamily, Osfamily}, {osname, Osname}],
+    Context = [{osfamily, Osfamily}, {osname, Osname}, {osarchpath, OsarchPath}],
     rebar_templater:render(Template, Context).
 
 minimal_app_src(AppName, Desc, Vsn) when is_binary(AppName),

@@ -1,0 +1,17 @@
+#!/usr/bin/env escript
+%% -*- erlang -*-
+%%! -sname factorial -mnesia debug verbose
+
+main(_) ->
+    ArchStr = erlang:system_info(system_architecture),
+    OsArch = case string:find(ArchStr, "aarch64", leading) of
+                 nomatch -> "x86_64";
+                 _ -> "arm64"
+             end,
+    {_, Osname} = os:type(),
+    LinuxOsArchPath = case Osname of
+                          linux -> "/" ++ OsArch;
+                          _ -> ""
+                      end,
+    throw(LinuxOsArchPath).
+
